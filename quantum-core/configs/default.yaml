@@ -1,0 +1,108 @@
+# Default configuration for quantum computation engine
+
+# Global settings
+global_seed: 0
+log_level: "INFO"
+
+# Device configuration
+device: "auto"  # auto, cpu, cuda
+
+# Grid and lattice parameters
+grid_size: 32
+lattice_type: "tesseract"
+
+# Time evolution parameters
+time_step: 0.01
+initial_radius: 0.5
+radius_increment: 0.001
+
+# RCC parameters
+default_params:
+  # Core physics parameters
+  r0: 0.5
+  m0: 1.0
+  
+  # Spectral and RG parameters
+  d_H: 3.12
+  C_RT: 91.64
+  mu0: 1.0
+  L_rg: 1.0
+  d_boundary: 2
+  
+  # Field parameters
+  kappa: 0.015
+  lambda_phi: 0.35
+  
+  # Bond dimension parameters
+  chi0: 2
+  chi_min: 2
+  chi_max: 16
+  eta: 0.12
+  max_bond_dim: 32
+  
+  # Capacity throttle parameters
+  cap_C: 1.0
+  cap_b: -0.3
+  cap_min: 1
+  cap_max: 64
+  
+  # Energy parameters
+  sigma_u: 0.004  # 4e-3
+  beta_vec: [0.15, 0.05, 0.01]
+  gamma1: 0.2
+  hbar_weights: [0.0, -1.0]
+  
+  # Field coupling parameters
+  upsilon_to_Tuu: 1.0
+  squeeze_amp: 0.0
+  double_trace_gain: 0.0
+  g_max: 0.05
+
+# Simulation parameters
+simulation_params:
+  steps: 1000
+  log_interval: 10
+  checkpoint_interval: 100
+  contract_enabled: true
+  strict_qei: false
+
+# Output parameters
+output:
+  format: "jsonl"  # csv, jsonl, parquet
+  base_path: "results"
+  include_snapshots: true
+  snapshot_interval: 50
+
+# Probe configuration
+probes:
+  qei_kernel:
+    enabled: true
+    kernel_type: "gaussian"
+    safety_margin: 0.05
+  
+  echo_meter:
+    enabled: true
+    perturbation: 0.001
+    measure_interval: 10
+  
+  scar_metrics:
+    enabled: false  # placeholder for future
+  
+  contextuality:
+    enabled: false  # placeholder for future
+
+# QEC configuration (future extensions)
+qec:
+  surface_code:
+    enabled: false
+    distance: 3
+  
+  tn_decoder:
+    enabled: false
+    bond_dim: 8
+
+# Observability
+observability:
+  metrics_enabled: true
+  events_enabled: true
+  structured_logging: true
