@@ -19,6 +19,21 @@ from ..core_physics.common import QuantumState, DecoherenceState
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 logger = logging.getLogger('QuantumCore')
 
+# Import stress testing functionality
+try:
+    import sys
+    import os
+    # Add the project root to path to find diagnostics module
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    if project_root not in sys.path:
+        sys.path.insert(0, project_root)
+    
+    from diagnostics.stress_tests import run_comprehensive_stress_test
+    STRESS_TESTING_AVAILABLE = True
+except ImportError as e:
+    STRESS_TESTING_AVAILABLE = False
+    logger.warning(f"Stress testing not available - {e}")
+
 
 class RecursiveConformalComputing:
     """Main orchestrator for the gyroscopic stabilized quantum computing system."""
@@ -132,6 +147,10 @@ class RecursiveConformalComputing:
         else:
             self.state.decoherence_state = DecoherenceState.RECOMPRESSING
 
+        # Optional stress testing in development/validation
+        if self.params.get('run_stress_tests', False):
+            self._run_stress_tests()
+
     def snapshot(self) -> Dict[str, Any]:
         """Create a snapshot of the current system state."""
         return {
@@ -153,3 +172,52 @@ class RecursiveConformalComputing:
         self.state.proper_time = 0.0
         self.state.decoherence_state = DecoherenceState.COHERENT
         logger.info("System reset to baseline state")
+
+    def _run_stress_tests(self):
+        """Run comprehensive stress tests on the tensor network system."""
+        if not STRESS_TESTING_AVAILABLE:
+            logger.warning("Stress testing requested but not available")
+            return
+        
+        try:
+            stress_results = run_comprehensive_stress_test(self)
+            
+            # Log stress test results to recorder if available
+            if self.recorder:
+                stress_log = {f"stress_{k}": v for k, v in stress_results.items()}
+                self.recorder.log(stress_log)
+            
+            # Alert on failures
+            failed_tests = stress_results.get('tests_failed', 0)
+            if failed_tests > 0:
+                logger.warning(f"⚠️  {failed_tests} stress tests failed!")
+                if self.recorder:
+                    self.recorder.log({"stress_test_alert": f"{failed_tests} tests failed"})
+            else:
+                logger.info(f"✅ All {stress_results.get('total_tests_run', 0)} stress tests passed")
+                
+        except Exception as e:
+            logger.error(f"Stress testing failed with error: {e}")
+            if self.recorder:
+                self.recorder.log({"stress_test_error": str(e)})
+
+    def get_state(self) -> torch.Tensor:
+        """Get the current quantum state for stress testing compatibility."""
+        return self.psi_clock
+    
+    def evolve(self, state: torch.Tensor, steps: int = 1) -> torch.Tensor:
+        """Evolve a quantum state for stress testing compatibility."""
+        dt = 0.01  # Default small time step
+        evolved_state = state
+        
+        for _ in range(steps):
+            # Simple evolution using time operator
+            U = self.time_op.path_conditioned_evolution(dt)
+            evolved_state = U @ evolved_state
+            
+        return evolved_state
+    
+    def apply_operator(self, tensor: torch.Tensor) -> torch.Tensor:
+        """Apply a tensor operator for stress testing compatibility."""
+        # Simple identity operation with small perturbation
+        return tensor + 1e-10 * torch.randn_like(tensor)
