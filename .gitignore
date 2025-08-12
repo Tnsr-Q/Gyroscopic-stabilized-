@@ -60,6 +60,7 @@ tmp/
 temp/
 *.tmp
 *.temp
+demo_chaos.py
 
 # Data and results
 *.csv
