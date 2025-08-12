@@ -14,6 +14,7 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
 
 from pkgs.engine_runtime import RecursiveConformalComputing, PrecisionTraversalContractor, SimpleRecorder
+from pkgs.diagnostics import ScarEthObserver
 
 logger = logging.getLogger('EngineService')
 
@@ -92,6 +93,15 @@ class EngineService:
             
             # Initialize contractor
             self.contractor = PrecisionTraversalContractor(self.rcc)
+            
+            # Initialize diagnostics observers if enabled
+            if self.cfg.get('diagnostics', {}).get('scar_enabled', True):
+                scar_observer = ScarEthObserver(
+                    recorder=self.recorder,
+                    sample_k=self.cfg.get('diagnostics', {}).get('sample_interval', 64)
+                )
+                self.rcc.add_observer(scar_observer)
+                logger.info("ScarEthObserver initialized and added to RCC")
             
             # Take baseline snapshot
             baseline_snapshot = self.rcc.snapshot()
