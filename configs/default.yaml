@@ -1,0 +1,49 @@
+# Default configuration for the Gyroscopic Stabilized Quantum Engine
+# This file contains the default parameters for the quantum simulation
+
+# Engine initialization parameters
+engine:
+  r0: 0.5                    # Initial radius parameter
+  m0: 1.0                    # Mass parameter
+  enable_recorder: true      # Enable data recording
+
+# Core physics parameters
+physics:
+  d_H: 3.12                  # Spectral dimension parameter
+  C_RT: 91.64               # RT constant for regularization
+  kappa: 0.015              # Alena Soul field coupling constant
+  sigma_u: 0.004            # Smearing parameter (4e-3)
+  mu0: 1.0                  # RG planner initial scale
+  L_rg: 1.0                 # RG planner length scale
+  d_boundary: 2             # Boundary dimension
+
+# Simulation parameters
+simulation:
+  dt: 0.01                  # Time step size
+  r_start: 0.1              # Starting radius value
+  r_end: 2.0                # Ending radius value
+  r_step: 0.01              # Radius increment per step
+  max_steps: 1000           # Maximum number of steps
+  save_interval: 100        # Save snapshot every N steps
+
+# Output configuration
+output:
+  recordings_path: "./recordings/simulation"
+  snapshot_path: "./snapshots"
+  
+# Logging configuration
+logging:
+  level: INFO               # Logging level (DEBUG, INFO, WARNING, ERROR)
+  file: "engine.log"        # Log file path
+
+# Advanced parameters (for fine-tuning)
+advanced:
+  tensor_drift_threshold: 0.001  # Maximum allowed tensor drift
+  qei_guard_threshold: -1.0      # QEI guard threshold
+  emergency_damping_factor: 0.9  # Factor for emergency damping
+  
+# Recording formats to enable
+recording:
+  csv: true                 # CSV format (backward compatibility)
+  jsonl: true              # JSONL format (structured logging)
+  parquet: true            # Parquet format (efficient storage)
