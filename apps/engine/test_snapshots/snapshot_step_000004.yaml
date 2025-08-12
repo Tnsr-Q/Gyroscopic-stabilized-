@@ -1,0 +1,240 @@
+coherence_gamma: 0.9993569121622271
+decoherence_state: coherent
+entropy: 0.0025
+initialized: true
+planck_factor: 1.000001
+proper_time: 0.25
+recorder_summary:
+  columns:
+  - timestamp
+  - ANE_smear
+  - K
+  - delta_tensor
+  - spectral_dim
+  - s_Pl
+  - c_rel
+  - proper_time
+  - coherence_gamma
+  - entropy
+  - r
+  - dt
+  first_timestamp: '2025-08-12T02:02:32.854502+00:00'
+  last_timestamp: '2025-08-12T02:02:44.146361+00:00'
+  numeric_stats:
+    ANE_smear:
+      count: 5
+      max: !!python/object/apply:numpy._core.multiarray.scalar
+      - &id001 !!python/object/apply:numpy.dtype
+        args:
+        - f8
+        - false
+        - true
+        state: !!python/tuple
+        - 3
+        - <
+        - null
+        - null
+        - null
+        - -1
+        - -1
+        - 0
+      - !!binary |
+        RcMYR5uZyT8=
+      mean: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        RcMYR5uZuT8=
+      min: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        +qCFiAaO4zg=
+      std: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        hJmygRkasj8=
+    K:
+      count: 5
+      max: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAA8D8=
+      mean: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        mpmZmZmZ7T8=
+      min: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAA6D8=
+      std: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        mZmZmZmZuT8=
+    c_rel:
+      count: 5
+      max: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAA8D8=
+      mean: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAA8D8=
+      min: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAA8D8=
+      std: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAAAAA=
+    coherence_gamma:
+      count: 5
+      max: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAQPL+7z8=
+      mean: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        jt9V0Nb87z8=
+      min: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        /5XYWLv67z8=
+      std: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        KHvnXTLXJz8=
+    delta_tensor:
+      count: 5
+      max: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAAAAA=
+      mean: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAAAAA=
+      min: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAAAAA=
+      std: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAAAAA=
+    dt:
+      count: 5
+      max: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        mpmZmZmZqT8=
+      mean: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        mpmZmZmZqT8=
+      min: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        mpmZmZmZqT8=
+      std: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAAAAA=
+    entropy:
+      count: 5
+      max: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        exSuR+F6ZD8=
+      mean: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        +n5qvHSTWD8=
+      min: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        /Knx0k1iQD8=
+      std: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        Fzf/P6QrRz8=
+    proper_time:
+      count: 5
+      max: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAA0D8=
+      mean: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        MzMzMzMzwz8=
+      min: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        mpmZmZmZqT8=
+      std: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        CmP/URgasj8=
+    r:
+      count: 5
+      max: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAA4D8=
+      mean: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        MzMzMzMz0z8=
+      min: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        mpmZmZmZuT8=
+      std: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        CmP/URgawj8=
+    s_Pl:
+      count: 5
+      max: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        C3pvDAEA8D8=
+      mean: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        C3pvDAEA8D8=
+      min: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        C3pvDAEA8D8=
+      std: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAAAAA=
+    spectral_dim:
+      count: 5
+      max: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAAAAA=
+      mean: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAAAAA=
+      min: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAAAAA=
+      std: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAAAAA=
+  row_count: 5
+spectral_dim: null
+step_count: 5
+tensor_drift: 0.0
+timestamp: 1754964166.3019602
+torsion: 0.1

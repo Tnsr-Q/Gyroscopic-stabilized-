@@ -67,3 +67,33 @@ class RGPlanner:
         """Compute Planck scale factor: M_Pl / M_Pl0 = (c_rel)^{1/(d-1)}"""
         exponent = 1.0 / max(1, self.d - 1)
         return float((c_rel + self.eps) ** exponent)
+
+
+class GyroscopeFeeler:
+    """Gyroscope feeler for signature extraction from bond graphs."""
+    
+    def __init__(self, graph):
+        self.graph = graph
+        
+    def gluewalk_signature(self, chi: dict, phi: dict, b_chi: int) -> torch.Tensor:
+        """Extract 8-component signature from bond graph state."""
+        E = len(self.graph.edges)
+        if E == 0: 
+            return torch.zeros(8, dtype=torch.float32)
+            
+        chi_a = np.fromiter((max(1, chi.get(e, b_chi)) for e in self.graph.edges), dtype=np.float64, count=E)
+        phi_a = np.fromiter((float(phi.get(e, 0.0)) for e in self.graph.edges), dtype=np.float64, count=E)
+        dlog, c_phi, s_phi = np.log(chi_a) - np.log(b_chi), np.cos(phi_a), np.sin(phi_a)
+        s1, s5, s6 = dlog.mean(), c_phi.mean(), s_phi.mean()
+        s2 = dlog.var() if E > 1 else 0.0
+        s3, s4 = dlog.max(), (dlog**2).sum()
+        
+        chunks = np.array_split(dlog, min(8, E))
+        contrast = [float(np.clip(c.sum(), -10, 10)) for c in chunks]
+        s7 = np.mean(contrast) if contrast else 0.0
+        
+        w = np.exp(dlog - dlog.max())
+        p = w / ((ws := w.sum()) + 1e-12) if ws > 0 else np.zeros_like(w)
+        s8 = -np.sum(p * np.log(p + 1e-12))
+        
+        return torch.tensor([s1, s2, s3, s4, s5, s6, s7, s8], dtype=torch.float32)

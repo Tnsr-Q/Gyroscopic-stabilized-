@@ -9,7 +9,7 @@ orchestration logic as part of the modular architecture migration.
 from .lattice import Edge, BondGraph, build_tesseract_lattice
 
 # Mathematical utilities  
-from .utils import _ddx, _ddy, _hypercube_bits, _embed_4d_to_2d, RGPlanner
+from .utils import _ddx, _ddy, _hypercube_bits, _embed_4d_to_2d, RGPlanner, GyroscopeFeeler
 
 # Field theory components
 from .fields import UVIRRegulator, AlenaSoul, ProperTimeGaugeField
@@ -23,11 +23,14 @@ from .timeops import TimeOperator, TimeRecompressionGate
 # Tensor networks
 from .tensors import MERASpacetime, estimate_spectral_dim_from_cut, leakage_ceiling
 
+# Common data structures
+from .common import DecoherenceState, QuantumState
+
 __all__ = [
     # Lattice
     'Edge', 'BondGraph', 'build_tesseract_lattice',
     # Utils
-    '_ddx', '_ddy', '_hypercube_bits', '_embed_4d_to_2d', 'RGPlanner',
+    '_ddx', '_ddy', '_hypercube_bits', '_embed_4d_to_2d', 'RGPlanner', 'GyroscopeFeeler',
     # Fields
     'UVIRRegulator', 'AlenaSoul', 'ProperTimeGaugeField', 
     # Control
@@ -35,5 +38,7 @@ __all__ = [
     # Time operations
     'TimeOperator', 'TimeRecompressionGate',
     # Tensors
-    'MERASpacetime', 'estimate_spectral_dim_from_cut', 'leakage_ceiling'
+    'MERASpacetime', 'estimate_spectral_dim_from_cut', 'leakage_ceiling',
+    # Common
+    'DecoherenceState', 'QuantumState'
 ]
