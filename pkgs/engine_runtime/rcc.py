@@ -58,6 +58,9 @@ class RecursiveConformalComputing:
         psi = torch.randn(self.time_op.dim_clock, dtype=torch.complex64, device=DEVICE)
         self.psi_clock = psi / torch.norm(psi)
         
+        # Initialize observers
+        self._observers = getattr(self, '_observers', [])
+        
         # Initialize diagnostics and monitoring
         self._dH_estimate = None  # Spectral dimension cache
         self.rg_planner = RGPlanner(
@@ -131,6 +134,9 @@ class RecursiveConformalComputing:
             self.state.decoherence_state = DecoherenceState.DECOHERENT
         else:
             self.state.decoherence_state = DecoherenceState.RECOMPRESSING
+            
+        # Notify observers after state update
+        self._notify("after_step", dt=dt, r=r)
 
     def snapshot(self) -> Dict[str, Any]:
         """Create a snapshot of the current system state."""
@@ -153,3 +159,15 @@ class RecursiveConformalComputing:
         self.state.proper_time = 0.0
         self.state.decoherence_state = DecoherenceState.COHERENT
         logger.info("System reset to baseline state")
+
+    def add_observer(self, observer):
+        """Add diagnostic observer (non-invasive)"""
+        self._observers.append(observer)
+
+    def _notify(self, tag: str, **kwargs):
+        """Notify all observers of RCC events"""
+        for obs in self._observers:
+            try:
+                obs.update(tag, rcc=self, **kwargs)
+            except Exception as e:
+                logger.debug(f"Observer {obs} error: {e}")
