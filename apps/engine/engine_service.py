@@ -15,6 +15,14 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
 
 from pkgs.engine_runtime import RecursiveConformalComputing, PrecisionTraversalContractor, SimpleRecorder
 
+# Optional chaos monitoring import
+try:
+    from pkgs.chaos import loschmidt_probe
+    CHAOS_AVAILABLE = True
+except ImportError:
+    CHAOS_AVAILABLE = False
+    loschmidt_probe = None
+
 logger = logging.getLogger('EngineService')
 
 
@@ -58,6 +66,15 @@ class EngineService:
         self.recorder: Optional[SimpleRecorder] = None
         self._initialized = False
         self._step_count = 0
+        
+        # Chaos monitoring setup
+        diagnostics_cfg = cfg.get('diagnostics', {})
+        self._chaos_enabled = CHAOS_AVAILABLE and diagnostics_cfg.get('chaos_enabled', False)
+        self._chaos_interval = diagnostics_cfg.get('chaos_interval', 100)
+        self._chaos_threshold = diagnostics_cfg.get('chaos_threshold', 0.5)
+        
+        if self._chaos_enabled:
+            logger.info("Chaos monitoring enabled")
         
         logger.info("EngineService created with configuration")
 
@@ -136,6 +153,10 @@ class EngineService:
             )
             
             self._step_count += 1
+            
+            # Chaos monitoring (if enabled)
+            if self._chaos_enabled and self._step_count % self._chaos_interval == 0:
+                self._perform_chaos_check()
             
             # Log step completion
             if self._step_count % 100 == 0:
@@ -251,6 +272,29 @@ class EngineService:
                 'success': False,
                 'message': f'Save failed: {str(e)}'
             }
+
+    def _perform_chaos_check(self):
+        """Perform chaos monitoring check."""
+        if not self._chaos_enabled or not loschmidt_probe:
+            return
+            
+        try:
+            # Extract Hamiltonian from RCC
+            H = self.rcc.time_op.H_int
+            
+            # Quick chaos check
+            result = loschmidt_probe.quick_chaos_check(H, self._chaos_threshold)
+            
+            # Log to recorder if available
+            if self.recorder:
+                self.recorder.log(result)
+            
+            # Alert on chaos detection
+            if result.get('is_chaotic', False):
+                logger.info(f"Quantum chaos detected at step {self._step_count}: {result['chaos_indicator']:.3f}")
+                
+        except Exception as e:
+            logger.debug(f"Chaos check failed: {e}")
 
     def shutdown(self) -> Dict[str, Any]:
         """Gracefully shutdown the engine service."""

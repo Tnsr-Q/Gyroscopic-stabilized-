@@ -47,3 +47,10 @@ recording:
   csv: true                 # CSV format (backward compatibility)
   jsonl: true              # JSONL format (structured logging)
   parquet: true            # Parquet format (efficient storage)
+
+# Diagnostics configuration
+diagnostics:
+  chaos_enabled: true       # Enable quantum chaos monitoring
+  chaos_interval: 100       # Check every N steps
+  chaos_threshold: 0.5      # Chaos detection threshold
+  loschmidt_perturbation: 1e-3  # Perturbation strength
