@@ -143,7 +143,7 @@ class UVIRRegulator:
     def update_bonds(self,g:BondGraph,ss:Dict,pb:Dict,N:int)->Tuple[Dict,Dict]:
         Kb,chi,phi=self._K_bulk(N),{},{}
         for e in g.edges:
-            chi_val = int(np.clip(self.chi0*(1.0+self.eta*Kb*float(ss.get(e,0.0)), self.chi_min, self.chi_max))
+            chi_val = int(np.clip(self.chi0*(1.0+self.eta*Kb*float(ss.get(e,0.0))), self.chi_min, self.chi_max))
             chi[e] = chi_val
             phi[e] = float(pb.get(e,0.0))
         return chi,phi
@@ -336,8 +336,8 @@ class MERASpacetime:
             isos.append(Q.conj().T)
         return isos
         
-    def compute_entanglement_entropy(self, region_size: int) -> float: 
-        return (1./3.)*np.log(region_size/1.0+1e-10))
+    def compute_entanglement_entropy(self, region_size: int) -> float:
+        return (1.0/3.0) * np.log(region_size + 1e-10)
         
     def imprint_bond_phases(self, graph, edges, phi_map, layers=None):
         if not edges: 
@@ -416,7 +416,7 @@ def estimate_spectral_dim_from_cut(graph, cut_edges) -> Optional[float]:
     bin_centers = 0.5*(bin_edges[1:] + bin_edges[:-1])
     
     # Focus on low-energy spectrum (first 30%)
-    low_energy_mask = bin_centers < np.percentile(bin_centers, 30))
+    low_energy_mask = bin_centers < np.percentile(bin_centers, 30)
     if np.sum(low_energy_mask) < 4:
         return None
         
@@ -452,7 +452,7 @@ class RenyiMonitor:
         # Fit log(S) vs log(n): slope ~ f(d_eff)
         p = np.polyfit(np.log(ns), np.log(np.maximum(S,1e-12)), 1)
         d_eff_est = -2.0 * p[0]  # toy mapping; replace with calibrated map
-        return float((d_eff_est - self.target)/max(self.target, 1e-6)))
+        return float((d_eff_est - self.target)/max(self.target, 1e-6))
 
 # ==================== NEW MODULES ====================
 class HoloEntropyDiagnostics:
@@ -836,7 +836,7 @@ class RecursiveConformalComputing:
             num += v * weight
             den += weight
             
-        return float(num / max(den, 1e-12)))
+        return float(num / max(den, 1e-12))
 
     def qei_guard(self, ane: float, sigma_u: float, margin: float=0.05) -> bool: 
         """Quantum Energy Inequality guard with dynamic RHS"""
