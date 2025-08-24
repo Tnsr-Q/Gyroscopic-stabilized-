@@ -79,7 +79,7 @@ class EngineService:
                 rcc_params['recorder'] = self.recorder
             
             # Merge configuration parameters
-            for key in ['d_H', 'C_RT', 'kappa', 'sigma_u', 'mu0', 'L_rg', 'd_boundary']:
+            for key in ['d_H', 'C_RT', 'kappa', 'sigma_u', 'mu0', 'L_rg', 'd_boundary', 'run_stress_tests']:
                 if key in self.cfg:
                     rcc_params[key] = self.cfg[key]
             
