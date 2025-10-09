@@ -14,6 +14,14 @@ from .utils import _ddx, _ddy, _hypercube_bits, _embed_4d_to_2d, RGPlanner, Gyro
 # Field theory components
 from .fields import UVIRRegulator, AlenaSoul, ProperTimeGaugeField
 
+# Energy accounting
+from .energy import (
+    semantic_energy_density,
+    semantic_energy_total,
+    semantic_energy_dissipation_density,
+    semantic_energy_dissipation_total,
+)
+
 # Control systems
 from .control import SignatureNormalizer, JacobianHypercube
 
@@ -32,7 +40,10 @@ __all__ = [
     # Utils
     '_ddx', '_ddy', '_hypercube_bits', '_embed_4d_to_2d', 'RGPlanner', 'GyroscopeFeeler',
     # Fields
-    'UVIRRegulator', 'AlenaSoul', 'ProperTimeGaugeField', 
+    'UVIRRegulator', 'AlenaSoul', 'ProperTimeGaugeField',
+    # Energy helpers
+    'semantic_energy_density', 'semantic_energy_total',
+    'semantic_energy_dissipation_density', 'semantic_energy_dissipation_total',
     # Control
     'SignatureNormalizer', 'JacobianHypercube',
     # Time operations
