@@ -452,7 +452,9 @@ def main(argv: Optional[List[str]] = None) -> None:
     tokens = law_token_vector(encoding)
     prompt = _build_prompt(tokens, args.template)
 
-    os.makedirs(os.path.dirname(os.path.abspath(args.output)), exist_ok=True)
+    output_dir = os.path.dirname(os.path.abspath(args.output))
+    if output_dir and not os.path.exists(output_dir):
+        os.makedirs(output_dir, exist_ok=True)
     with open(args.output, "w", encoding="utf-8") as handle:
         handle.write(prompt)
 
