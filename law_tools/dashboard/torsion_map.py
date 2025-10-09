@@ -36,13 +36,14 @@ def make_torsion_heatmap(result: TorsionMapResult, chaos_threshold: float = 0.5)
         raise RuntimeError("plotly is required to generate torsion heatmaps")
 
     fig = go.Figure(
-        data=
-        go.Heatmap(
-            x=result.r[0],
-            y=result.theta[:, 0],
-            z=result.torsion,
-            colorscale="Viridis",
-            colorbar=dict(title="|χ|"),
+        data=(
+            go.Heatmap(
+                x=result.r[0],
+                y=result.theta[:, 0],
+                z=result.torsion,
+                colorscale="Viridis",
+                colorbar=dict(title="|χ|"),
+            )
         )
     )
     fig.update_layout(
