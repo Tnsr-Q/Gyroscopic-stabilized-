@@ -34,6 +34,8 @@ class LiveHookBus:
         if self._worker and self._worker.is_alive():
             return
 
+        self._stop.clear()
+
         def _run() -> None:
             while not self._stop.is_set():
                 try:
@@ -50,7 +52,7 @@ class LiveHookBus:
         self._stop.set()
         if self._worker and self._worker.is_alive():
             self._worker.join(timeout=1.0)
-
+        self._worker = None
 
 @dataclass
 class LiveLawState:
