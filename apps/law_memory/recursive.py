@@ -30,6 +30,21 @@ def _simulate_for_params(params: ParameterSet, config: LawMemoryConfig) -> np.nd
     return state.law_field
 
 
+def build_parameter_grid(
+    gamma_range: Iterable[float],
+    chi_range: Iterable[float],
+    delta_range: Iterable[float],
+) -> List[ParameterSet]:
+    """Return a list of :class:`ParameterSet` objects spanning the ranges."""
+
+    params: List[ParameterSet] = []
+    for gamma0 in gamma_range:
+        for chi0 in chi_range:
+            for delta in delta_range:
+                params.append(ParameterSet(gamma0=gamma0, chi0=chi0, delta=delta))
+    return params
+
+
 def run_recursive_ensemble(parameters: Sequence[ParameterSet], config: LawMemoryConfig | None = None) -> List[np.ndarray]:
     cfg = config or LawMemoryConfig()
     if MPI is None or (comm := MPI.COMM_WORLD).size == 1:  # type: ignore[truthy-function]
@@ -48,4 +63,4 @@ def run_recursive_ensemble(parameters: Sequence[ParameterSet], config: LawMemory
     return results
 
 
-__all__ = ["ParameterSet", "run_recursive_ensemble"]
+__all__ = ["ParameterSet", "build_parameter_grid", "run_recursive_ensemble"]

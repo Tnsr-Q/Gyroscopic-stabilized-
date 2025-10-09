@@ -18,7 +18,9 @@ import numpy as np
 
 from .core import LawMemoryConfig, LawMemorySimulator
 from .visual.diagnostics import plot_entropy_loop, plot_law_attractor
+from .analysis import classify_trajectory, compute_coherence_embedding, detect_fixed_point
 from .chaos import compute_torsion_spectrum
+from .energy import total_update_energy
 from .metrics import inject_into_metrics
 from .observables import density_to_gamma
 
@@ -76,13 +78,34 @@ def main(argv: list[str] | None = None) -> int:
     checkpoint = args.output_dir / "law_memory_checkpoint.json"
     _save_checkpoint(checkpoint, law_field, cfg)
 
-    gamma = sim.simulate().gamma  # Use default state for diagnostics
+    default_state = sim.simulate()
+    gamma = default_state.gamma  # Use default state for diagnostics
     torsion_spectrum = compute_torsion_spectrum(gamma)
     metrics = inject_into_metrics(sim.grid, law_field[-1])
 
+    fixed_point = detect_fixed_point(law_field)
+    embedding = compute_coherence_embedding(law_field)
+    trajectory_label = classify_trajectory(law_field)
+
+    psi = np.sqrt(np.clip(gamma, 1e-8, None))
+    energy_report = total_update_energy(gamma, psi)
+
     diagnostics_path = args.output_dir / "diagnostics.json"
     diagnostics_path.write_text(
-        json.dumps({"torsion_spectrum": torsion_spectrum.tolist(), "metrics": metrics}, indent=2)
+        json.dumps(
+            {
+                "torsion_spectrum": torsion_spectrum.tolist(),
+                "metrics": metrics,
+                "fixed_point": {"is_fixed": fixed_point.is_fixed},
+                "trajectory_label": trajectory_label,
+                "embedding_norm": float(np.linalg.norm(embedding)),
+                "energy": {
+                    "total": energy_report.total,
+                    "density_mean": float(np.mean(energy_report.density)),
+                },
+            },
+            indent=2,
+        )
     )
 
     if args.make_plots:
