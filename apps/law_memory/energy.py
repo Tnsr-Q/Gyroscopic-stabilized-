@@ -25,9 +25,7 @@ def semantic_energy_density(
 
     gamma_safe = np.clip(gamma, 1e-8, None)
     grad_log_gamma = np.gradient(np.log(gamma_safe))
-    grad_norm_sq = np.zeros_like(gamma_safe, dtype=float)
-    for comp in grad_log_gamma:
-        grad_norm_sq += comp**2
+    grad_norm_sq = np.sum(np.array(grad_log_gamma) ** 2, axis=0)
 
     rho_sem = np.abs(psi) ** 2
     density = 0.5 * (kappa**2) * rho_sem * grad_norm_sq
