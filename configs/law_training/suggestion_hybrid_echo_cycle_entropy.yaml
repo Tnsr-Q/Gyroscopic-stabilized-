@@ -1,0 +1,42 @@
+metadata:
+  version: 2.0
+  description: Cyclic entropy modulation for recursive law hysteresis encoding
+
+global_settings:
+  mutation_temperature: 0.38
+  memory_loop_feedback: enabled
+  cycle_entropy_cap: 0.15
+  seed: 42024
+
+operator_projection_targets:
+  - name: entropy-cycled-loop
+    type: χ-gradient field
+    evolution_form: "∂χ/∂t = α sin(ω t)"
+    ω: 0.897597901
+    α: 0.12
+
+  - name: loop_persistence
+    constraint: "∇Φ ∝ ∇χ"
+    feedback_strength: 0.6
+    hysteresis_goal: maintain ±0.25
+
+operator_mutation_rules:
+  - name: spiral_echo_bleed
+    function: "Ψ → Ψ + ε ∂γ/∂t"
+    ε: 0.01
+    triggers: law basin crossing
+
+  - name: decoherence_recoil
+    form: "γ(t) ↔ γ(t-Δt) ± κ sin(χ)"
+    κ: 0.05
+    decay_envelope: tanh
+
+fitness_evaluation:
+  memory_loop_closure: "> 0.94"
+  entropy_variance_per_cycle: '< 0.04'
+  attractor_centroid_shift: bounded
+
+mutate:
+  operator_weights: [0.11, -0.06, 0.09, -0.02, 0.03]
+  shift_basis: true
+  reproject_after: true

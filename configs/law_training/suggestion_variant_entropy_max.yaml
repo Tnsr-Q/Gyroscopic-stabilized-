@@ -1,0 +1,43 @@
+metadata:
+  version: 1.1
+  description: Entropy-maximising operator bias template
+
+global_settings:
+  mutation_temperature: 0.45
+  bias_strategy: entropy_gradient_ascent
+  seed: 777
+
+operator_projection_targets:
+  - name: decoherence_ramp
+    type: χ-modulation
+    projection: "∂χ/∂t"
+    goal: maximize
+    weight: 1.0
+
+  - name: torsion_uncurling
+    type: vortex_loosen
+    constraint: "∇ × T^μ → 0"
+    bias: strong
+
+operator_mutation_rules:
+  - name: ψ_scrambler
+    mutation_type: Fourier-ripple
+    frequency_band: [1.5, 7.2]
+    apply_to: Im[Ψ]
+    jitter: 0.15
+
+  - name: golden_divergence_injection
+    equation: "∂μ j^μ += φ * ∇ log γ"
+    φ: 1.618
+    apply_to: semantic_current
+    bias: extreme
+
+fitness_evaluation:
+  total_entropy: maximize
+  spectral_flatness: enforce > 0.92
+  χ-gradient_mobility: loosen >= 0.3
+
+mutate:
+  operator_weights: [0.18, 0.07, -0.12, 0.05, -0.03]
+  shift_basis: true
+  reproject_after: true
