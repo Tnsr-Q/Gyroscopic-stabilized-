@@ -38,7 +38,12 @@ def compute_gamma_loops(
     gamma_forward = gamma_fn(r_values, y0, phi)
     gamma_reverse = gamma_fn(r_values, y0, -phi)
     loop_area = np.trapz(gamma_forward - gamma_reverse, r_values)
-    return GammaLoopResult(r=r_values, gamma_forward=gamma_forward, gamma_reverse=gamma_reverse, loop_area=float(loop_area))
+    return GammaLoopResult(
+        r=r_values,
+        gamma_forward=gamma_forward,
+        gamma_reverse=gamma_reverse,
+        loop_area=float(loop_area),
+    )
 
 
 def make_gamma_figure(result: GammaLoopResult):  # pragma: no cover - plotting helper
