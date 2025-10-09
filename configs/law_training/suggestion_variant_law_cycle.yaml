@@ -1,0 +1,36 @@
+metadata:
+  version: 1.2
+  description: Law-cycling template for periodic attractor traversal
+
+global_settings:
+  mutation_temperature: 0.25
+  periodicity_bias: enabled
+  seed: 31415
+
+operator_projection_targets:
+  - name: loop_phasor
+    type: law_phase
+    target_angle: "arg(𝓛)"
+    recurrence_goal: periodic
+    period: 5
+
+  - name: law_orbit_radius
+    type: attractor_distance
+    constraint: "oscillate in [0.1, 0.35]"
+
+operator_mutation_rules:
+  - name: gamma_resonator
+    function: "γ(r) *= sin(ω t + φ)"
+    ω: 1.2566370614
+    φ: 0.3926990817
+    feedback: hysteresis loop amplitude
+
+fitness_evaluation:
+  loop_closure_integral: minimize_drift
+  cycle_entropy_gain: '< 0.01 per orbit'
+  recurrence_fidelity: "> 0.95"
+
+mutate:
+  operator_weights: [0.05, -0.02, 0.08, -0.04, 0.01]
+  shift_basis: true
+  reproject_after: true

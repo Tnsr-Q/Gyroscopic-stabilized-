@@ -1,0 +1,75 @@
+metadata:
+  version: 1.0
+  description: >-
+    Template for GPT-guided operator projection conditioning.
+    Defines semantic alignment, mutation biases, and torsion preferences.
+
+global_settings:
+  random_seed: 1337
+  apply_softmax_bias: true
+  mutation_temperature: 0.15
+
+operator_projection_targets:
+  - name: torsion_alignment
+    type: ψ-gradient
+    target_vector: "∇ arg(Ψ)"
+    alignment_goal: maximize
+    importance_weight: 0.9
+
+  - name: curvature_cancellation
+    type: semantic
+    target_tensor: "∂²χ"
+    goal: minimize
+    weight: 0.75
+
+  - name: coherence_memory_lock
+    type: flux-persistence
+    field: "γ"
+    projection_basis: "torsion_eigenmodes"
+    constraint: "Preserve loop entropy below 0.12"
+
+  - name: mirror_self_duality
+    type: PT-dual
+    condition: "Im[Ψ] ↔ -Im[Ψ]"
+    goal: enforce_symmetry
+    jitter_tolerance: 0.04
+
+operator_mutation_rules:
+  - name: soft_spiral_torsion
+    mutation_type: additive
+    function: "sin(ωr + φ)"
+    parameters:
+      ω: 2.0
+      φ: π/6
+    apply_to: torsion_channel
+    bias: moderate
+
+  - name: χ-density_pulse
+    mutation_type: Gaussian-bump
+    center: r=4.2
+    amplitude: 0.05
+    sigma: 0.8
+    apply_to: χ_field
+    condition: "only if ∂χ/∂t < 0"
+
+  - name: γ-spiral_resonance_shift
+    mutation_type: phase_twist
+    equation: "γ(r) *= exp(i * α * sin(θ))"
+    α: 0.07
+    domain: (r, θ)
+
+fitness_evaluation:
+  hysteresis_loop_area: minimize
+  torsion_norm_stability: threshold < 0.42
+  echo_mass_conservation: soft_constraint
+  projection_overlap_consistency: enforce > 0.95
+
+notes:
+  - Ensure suggestions remain within causal zone (τ < τ_collapse).
+  - Avoid symmetry violation across γ < 0.01 unless testing entropy escape.
+  - Re-evaluate law convergence every 12 epochs or 40 iterations.
+
+mutate:
+  operator_weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  shift_basis: true
+  reproject_after: true

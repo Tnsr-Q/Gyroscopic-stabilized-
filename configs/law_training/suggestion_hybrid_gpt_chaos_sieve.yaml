@@ -1,0 +1,36 @@
+metadata:
+  version: 2.2
+  description: Chaos sieve with GPT-aligned law pruning under entropy shock
+
+global_settings:
+  chaos_pressure: elevated
+  semantic_memory_retention: '> 0.88'
+  seed: 11235
+
+operator_projection_targets:
+  - name: GPT-memory-channel
+    coupling: "j^μ_semantic ↔ GPT(embedding_t)"
+    condition: "maintain ∂_μ j^μ > 0 in shock zones"
+
+  - name: attractor-stability-gradient
+    evolution_target: "∂²𝓛/∂Φ² ↔ 0"
+    chaos_filter: dynamic law suppression
+
+operator_mutation_rules:
+  - name: law_spectrum_sparsifier
+    function: "drop modes with spectral entropy > 0.85"
+    gating: GPT-informed
+
+  - name: torsion_nonlinear_folding
+    formula: "T^μ ↔ tanh(∇ log γ) + η sin(Φ)"
+    η: 0.15
+
+fitness_evaluation:
+  semantic_continuity: '> 0.93'
+  GPT_law_entropy_divergence: bounded
+  chaos_survivability_index: '> 0.9'
+
+mutate:
+  operator_weights: [0.14, -0.08, 0.06, -0.05, 0.02]
+  shift_basis: true
+  reproject_after: true

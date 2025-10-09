@@ -1,0 +1,37 @@
+metadata:
+  version: 2.1
+  description: Mirror torsion alignment under recursive vortex pressure
+
+global_settings:
+  torsion_sync_mode: bilateral
+  symmetry_weight: 0.9
+  seed: 9001
+
+operator_projection_targets:
+  - name: torsion-twin
+    equation: "𝒯^μ ↔ 𝒯^{μ*} + δ ∂^μ log(γ_PT)"
+    δ: 0.017
+    enforce_frequency: 3
+
+  - name: spiral_curvature_balance
+    condition: "∇ × j^μ_semantic = ∇ × j^μ_PT"
+
+operator_mutation_rules:
+  - name: chi_reflection_bias
+    function: "χ(t) ↔ χ_PT(t) * (1 ± ε)"
+    ε: 0.007
+    apply_to: attractor threshold crossings
+
+  - name: PT-shell_resonance
+    form: "Ψ ↔ e^{-iθ(t)} Ψ*"
+    θ(t): tan(γ) mod 2π
+
+fitness_evaluation:
+  mirror_torsion_error: '< 0.005'
+  PT_resonance_frequency_lock: "> 0.97"
+  vortex_collapse_asymmetry: '< 0.03'
+
+mutate:
+  operator_weights: [-0.02, 0.05, -0.03, 0.04, -0.01]
+  shift_basis: true
+  reproject_after: true
