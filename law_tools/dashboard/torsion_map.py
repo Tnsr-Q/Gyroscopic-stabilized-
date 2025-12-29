@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 import numpy as np
 
@@ -32,8 +31,12 @@ def compute_torsion_map(chi_int: float, perturb: float = 0.0, size: int = 100) -
 
 
 def make_torsion_heatmap(result: TorsionMapResult, chaos_threshold: float = 0.5):  # pragma: no cover
+    """Create a heatmap of torsion values with an optional chaos threshold marker."""
+
     if go is None:
         raise RuntimeError("plotly is required to generate torsion heatmaps")
+
+    above_threshold_mask = result.torsion > chaos_threshold
 
     fig = go.Figure(
         data=(
@@ -46,13 +49,25 @@ def make_torsion_heatmap(result: TorsionMapResult, chaos_threshold: float = 0.5)
             )
         )
     )
+
+    if np.any(above_threshold_mask):
+        fig.add_trace(
+            go.Scatter(
+                x=result.r[above_threshold_mask],
+                y=result.theta[above_threshold_mask],
+                mode="markers",
+                marker=dict(color="red", size=5, symbol="x"),
+                name="chaotic region",
+            )
+        )
+
     fig.update_layout(
         title="Torsion Norm Explorer",
         xaxis_title="r",
         yaxis_title="θ",
         annotations=[
             dict(
-                text="chaos > 0.5",
+                text=f"chaos > {chaos_threshold:g}",
                 xref="paper",
                 yref="paper",
                 x=1.02,
