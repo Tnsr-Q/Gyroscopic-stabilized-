@@ -20,7 +20,8 @@ def area_volume_exponent(field: np.ndarray, max_L: Optional[int] = None) -> Tupl
     for L in Ls:
         patch = field[:L, :L]
         Svals.append(_shannon_entropy_from_patch(patch))
-    Lfit = np.log(Ls[2:]); Sfit = np.log(np.maximum(Svals[2:], 1e-12))
+    Lfit = np.log(Ls[2:])
+    Sfit = np.log(np.maximum(Svals[2:], 1e-12))
     slope = float(np.polyfit(Lfit, Sfit, 1)[0])
     return slope, Svals
 
