@@ -45,7 +45,7 @@ def mutual_information_decay(field: np.ndarray,
         S_A = S_box(xA, y0)
         S_B = S_box(xB, y0)
         S_AB = _shannon_entropy_from_patch(
-            np.block([[field[y0:y0+box, xA:xA+box], field[y0:y0+box, xB:xB+box]]])
+            np.block([field[y0:y0+box, xA:xA+box], field[y0:y0+box, xB:xB+box]])
         )
         I = S_A + S_B - S_AB
         seps.append(dx)
