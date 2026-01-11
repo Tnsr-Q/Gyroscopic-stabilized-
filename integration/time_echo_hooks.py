@@ -1,7 +1,7 @@
 # integration/time_echo_hooks.py
 from __future__ import annotations
 import torch
-from typing import Dict, Any, Tuple
+from typing import Dict, Any
 from timeops.three_time_ops import ThreeTimeClock
 from protocols.time_echo import TimeRecompressionProtocol
 
