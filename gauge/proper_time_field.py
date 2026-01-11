@@ -39,10 +39,14 @@ class ProperTimeGauge:
         (In abelian case, true curvature from gravity cannot be gauged away,
          but *relative phase* for the internal clock along selected paths can be.)
         Modifies self.tau in-place. Returns None.
+        
+        Note: For scalar gauge fields, F ≡ 0 due to Schwarz's theorem (∂_x∂_y = ∂_y∂_x).
+        We use Laplacian smoothing on τ to reduce local phase variations.
         """
         for _ in range(iters):
+            # Compute curvature for monitoring (identically zero for smooth scalar fields)
             F = self.curvature()
-            # Laplacian step on τ as proxy to reduce local curl
+            # Laplacian smoothing on τ to reduce local phase gradients
             lap = (torch.roll(self.tau, -1, 0) + torch.roll(self.tau, 1, 0) +
                    torch.roll(self.tau, -1, 1) + torch.roll(self.tau, 1, 1) - 4*self.tau)
             self.tau = self.tau - alpha * lap
