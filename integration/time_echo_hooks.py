@@ -2,12 +2,27 @@
 from __future__ import annotations
 import torch
 import warnings
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 from timeops.three_time_ops import ThreeTimeClock
 from protocols.time_echo import TimeRecompressionProtocol
 
-def time_echo_sense(rcc, clock: ThreeTimeClock):
+# Default scaling factors for path 2 in echo protocol
+# These create differential evolution between paths to probe phase differences
+# Values chosen to provide ~10% variation around identity for sensitivity
+DEFAULT_PATH2_SCALES = (1.0, 1.1, 0.9)
+
+def time_echo_sense(rcc, clock: ThreeTimeClock, seed: Optional[int] = None):
+    """
+    Create sense function for echo protocol with persistent reference state.
+    
+    Args:
+        rcc: RecursiveConformalComputing instance
+        clock: ThreeTimeClock instance
+        seed: Optional random seed for reproducible reference state initialization
+    """
     # Initialize reference state once for consistent coherence tracking
+    if seed is not None:
+        torch.manual_seed(seed)
     psi_ref = torch.randn(clock.d**3, dtype=torch.complex128, device=clock.device)
     psi_ref = psi_ref / torch.linalg.norm(psi_ref)
     
@@ -27,14 +42,14 @@ def time_echo_sense(rcc, clock: ThreeTimeClock):
         return rt
     return _sense
 
-def time_echo_compute(rcc, clock: ThreeTimeClock, path2_scales=(1.0, 1.1, 0.9)):
+def time_echo_compute(rcc, clock: ThreeTimeClock, path2_scales=DEFAULT_PATH2_SCALES):
     """
     Create echo compute function with configurable path scaling.
     
     Args:
         rcc: RecursiveConformalComputing instance
         clock: ThreeTimeClock instance
-        path2_scales: Tuple of scaling factors for second path (default: (1.0, 1.1, 0.9))
+        path2_scales: Tuple of scaling factors for second path (default: DEFAULT_PATH2_SCALES)
                      These introduce differential evolution to probe phase differences.
     """
     proto = TimeRecompressionProtocol(clock)
