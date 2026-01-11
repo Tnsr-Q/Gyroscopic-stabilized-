@@ -19,9 +19,9 @@ class TimeRecompressionProtocol:
         """
         with torch.no_grad():
             # Expectation values <K_i> in state ψ0
-            Ek1 = torch.real((psi0.conj()* (self.clock.K1 @ psi0)).sum())
-            Ek2 = torch.real((psi0.conj()* (self.clock.K2 @ psi0)).sum())
-            Ek3 = torch.real((psi0.conj()* (self.clock.K3 @ psi0)).sum())
+            Ek1 = torch.real(psi0.conj() @ (self.clock.K1 @ psi0))
+            Ek2 = torch.real(psi0.conj() @ (self.clock.K2 @ psi0))
+            Ek3 = torch.real(psi0.conj() @ (self.clock.K3 @ psi0))
             # Net phase from overlap U1† U2
             ov = (psi0.conj() @ (U1.conj().T @ (U2 @ psi0))).item()
             phi = torch.tensor([np.angle(ov)], dtype=torch.float64).item()
