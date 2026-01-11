@@ -24,7 +24,7 @@ class TimeRecompressionProtocol:
             Ek3 = torch.real(psi0.conj() @ (self.clock.K3 @ psi0))
             # Net phase from overlap U1† U2
             ov = (psi0.conj() @ (U1.conj().T @ (U2 @ psi0))).item()
-            phi = torch.tensor([np.angle(ov)], dtype=torch.float64).item()
+            phi = float(np.angle(ov))
             # Distribute φ across components by relative weights (regularized)
             w = torch.tensor([abs(Ek1), abs(Ek2), abs(Ek3)], dtype=torch.float64)
             w = w / (w.sum() + 1e-12)
