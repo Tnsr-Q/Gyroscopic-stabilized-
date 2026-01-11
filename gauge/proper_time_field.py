@@ -35,9 +35,10 @@ class ProperTimeGauge:
 
     def flatten(self, iters: int = 20, alpha: float = 0.2):
         """
-        Gradient-like solve for χ: minimize ||F||^2 by adjusting τ -> τ - χ.
+        In-place: Gradient-like solve for χ, minimizing ||F||^2 by adjusting τ -> τ - χ.
         (In abelian case, true curvature from gravity cannot be gauged away,
          but *relative phase* for the internal clock along selected paths can be.)
+        Modifies self.tau in-place. Returns None.
         """
         for _ in range(iters):
             F = self.curvature()
@@ -45,4 +46,3 @@ class ProperTimeGauge:
             lap = (torch.roll(self.tau, -1, 0) + torch.roll(self.tau, 1, 0) +
                    torch.roll(self.tau, -1, 1) + torch.roll(self.tau, 1, 1) - 4*self.tau)
             self.tau = self.tau - alpha * lap
-        return self.tau
