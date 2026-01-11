@@ -14,7 +14,7 @@ class ThreeTimeClock:
     We represent τ_i as POVM-style phase coordinates and K_i as
     Hermitian generators acting on the internal clock Hilbert space H_clock.
     """
-    d: int = 64                 # clock Hilbert dimension per axis
+    d: int = 64                 # clock Hilbert dimension
     hbar: float = 1.0
     device: str = "cpu"
 
