@@ -26,17 +26,21 @@ class ThreeTimeClock:
         n = torch.arange(self.d, device=self.device, dtype=torch.float64)
         # Momentum-like spectrum for K (periodic clock)
         k_spec = 2.0*np.pi*(n - self.d//2)/self.d
-        self.K1 = torch.diag(k_spec).to(torch.complex128)        # Hermitian
-        self.K2 = torch.diag(k_spec).to(torch.complex128)
-        self.K3 = torch.diag(k_spec).to(torch.complex128)
+        K = torch.diag(k_spec).to(torch.complex128)        # Hermitian
+        I = torch.eye(self.d, dtype=torch.complex128, device=self.device)
+        # 3D Hilbert space: d^3
+        self.K1 = torch.kron(torch.kron(K, I), I)
+        self.K2 = torch.kron(torch.kron(I, K), I)
+        self.K3 = torch.kron(torch.kron(I, I), K)
 
         # τ operators as conjugates via discrete Fourier transform F
         F = torch.fft.fft(torch.eye(self.d, dtype=torch.complex128, device=self.device), dim=0)/np.sqrt(self.d)
         tau_spec = torch.linspace(-np.pi, np.pi, self.d, dtype=torch.float64, device=self.device)
         Tau_diag = torch.diag(tau_spec).to(torch.complex128)
-        self.Tau1 = (F.conj().T @ Tau_diag @ F)  # POVM-like angle operator
-        self.Tau2 = (F.conj().T @ Tau_diag @ F)
-        self.Tau3 = (F.conj().T @ Tau_diag @ F)
+        Tau = (F.conj().T @ Tau_diag @ F)  # POVM-like angle operator
+        self.Tau1 = torch.kron(torch.kron(Tau, I), I)
+        self.Tau2 = torch.kron(torch.kron(I, Tau), I)
+        self.Tau3 = torch.kron(torch.kron(I, I), Tau)
 
     # --- Unitary evolution and echo gates ---
     def U_path(self, lambdas: Tuple[float,float,float]) -> Tensor:
