@@ -1,0 +1,36 @@
+metadata:
+  version: 1.3
+  description: Mirror sector synchronization for law duality
+
+global_settings:
+  softmax_reinforcement: true
+  mirror_state_tie: enforce
+  seed: 8888
+
+operator_projection_targets:
+  - name: PT-alignment
+    type: conjugate
+    equation: "Ψ ↔ Ψ*"
+    symmetry_goal: enforce_mirror_match
+
+  - name: entropic_balance
+    type: χ-dual
+    equation: "χ_PT = χ"
+    tolerance: 0.01
+
+operator_mutation_rules:
+  - name: symmetry_lock
+    function: "Ψ ↔ e^{-iθ} Ψ*"
+    θ: 0.7853981634
+    apply_to: all_sectors
+    bias: high
+
+fitness_evaluation:
+  entropy_symmetry_error: '< 0.005'
+  torsion_dual_norm: match_within_2_percent
+  reflection_fidelity: "> 0.99"
+
+mutate:
+  operator_weights: [-0.04, 0.04, -0.01, 0.03, -0.05]
+  shift_basis: true
+  reproject_after: true
