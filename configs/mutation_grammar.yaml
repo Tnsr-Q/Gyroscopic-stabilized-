@@ -1,0 +1,24 @@
+variants:
+  default:
+    templates:
+      - "Evolve the law operator so that {0} modulates {1} under {2}."
+      - "Guide the trajectory where {0} interacts with {1} within a {2} regime."
+    mutations:
+      - ["gamma drift", "torsion impulse", "entropy bias"]
+      - ["semantic curl", "phase memory", "mirror echo"]
+      - ["stable basin", "oscillatory loop", "chaotic tail"]
+  entropic_cycle:
+    templates:
+      - "During the entropic cycle, let {0} reinforce {1} while monitoring {2}."
+    mutations:
+      - ["coherence flux", "loop entropy"]
+      - ["torsion twist", "phase spiral"]
+      - ["gamma horizon", "law memory"]
+  mirror_sync:
+    templates:
+      - "Build PT-aligned prompts so that {0} balances {1} across {2}."
+    mutations:
+      - ["torsion", "entropy", "gamma"]
+      - ["dual drift", "mirror loop"]
+      - ["conjugate sector", "symmetric slice"]
+

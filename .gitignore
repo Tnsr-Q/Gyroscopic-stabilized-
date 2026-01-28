@@ -63,6 +63,7 @@ temp/
 
 # Data and results
 *.csv
+!pkgs/certs/ks_rays_57.csv  # Bundle KS ray data
 *.jsonl
 *.parquet
 *.h5
